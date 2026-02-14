@@ -3,7 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stomatch — Prove Your Market Instinct</title>
+<title>Stomatch | Prove Your Market Instinct</title>
+<meta name="description" content="Build mock portfolios, analyze real fundamentals, and climb the leaderboard. Stomatch lets you prove your stock-picking skills with zero risk.">
+<meta name="keywords" content="stock market game, mock portfolio, stock picking, investing competition, leaderboard, paper trading">
+<meta name="author" content="Stomatch">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://stomatch.app/">
+<link rel="icon" type="image/svg+xml" href="sm_icon.svg">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Stomatch | Prove Your Market Instinct">
+<meta property="og:description" content="Build mock portfolios, analyze real fundamentals, and climb the leaderboard. No real money, all real skill.">
+<meta property="og:url" content="https://stomatch.app/">
+<meta property="og:site_name" content="Stomatch">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Stomatch | Prove Your Market Instinct">
+<meta name="twitter:description" content="Build mock portfolios, analyze real fundamentals, and climb the leaderboard. No real money, all real skill.">
+
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -79,6 +98,27 @@ h1 span{background:linear-gradient(135deg,#a78bfa,#7ecfc2);-webkit-background-cl
 .card.gone-r{transform:translateX(400px) rotate(20deg)!important;opacity:0;transition:all .4s ease-out!important}
 .card.gone-l{transform:translateX(-400px) rotate(-20deg)!important;opacity:0;transition:all .4s ease-out!important}
 
+/* HOW IT WORKS */
+.hiw{padding:5rem 2rem;background:#f8f6fb;text-align:center}
+.hiw h2{font-weight:900;font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:-.03em;margin-bottom:.6rem}
+.hiw>.desc{color:#4a4a6a;max-width:500px;margin:0 auto 3rem;line-height:1.7}
+.steps{display:flex;gap:2rem;max-width:900px;margin:0 auto;align-items:flex-start;position:relative}
+.step{flex:1;text-align:center;position:relative}
+.step-num{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#a78bfa,#7ecfc2);color:#fff;font-weight:900;font-size:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem}
+.step-icon{width:64px;height:64px;border-radius:16px;background:#fff;border:1px solid #f0f0f0;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;box-shadow:0 4px 15px rgba(0,0,0,.04)}
+.step-icon svg{width:28px;height:28px;color:#1a1a2e}
+.step h3{font-weight:800;font-size:1.05rem;margin-bottom:.4rem;letter-spacing:-.01em}
+.step p{color:#4a4a6a;font-size:.85rem;line-height:1.6;max-width:220px;margin:0 auto}
+.step-line{display:none}
+@media(min-width:769px){
+    .step-line{display:block;position:absolute;top:24px;left:calc(50% + 34px);width:calc(100% - 68px);height:2px;background:linear-gradient(90deg,#a78bfa,#7ecfc2);opacity:.3}
+    .step:last-child .step-line{display:none}
+}
+@media(max-width:768px){
+    .steps{flex-direction:column;gap:2rem;align-items:center}
+    .step{max-width:300px}
+}
+
 /* FEATURES */
 .feat{padding:5rem 2rem;background:#fff;text-align:center}
 .feat h2{font-weight:900;font-size:clamp(1.8rem,4vw,2.8rem);letter-spacing:-.03em;margin-bottom:.8rem}
@@ -124,15 +164,15 @@ footer p{color:rgba(255,255,255,.2);font-size:.8rem}
 <body>
 
 <nav>
-    <div class="logo">stomatch</div>
+    <div class="logo"><img src="sm_icon.svg" alt="Stomatch" width="28" height="28" style="vertical-align:middle;margin-right:.4rem">stomatch</div>
     <a href="#beta">Apply for Beta</a>
 </nav>
 
 <section class="hero">
     <div class="hero-content">
-        <div class="badge"><span class="dot"></span>Closed beta — limited spots</div>
+        <div class="badge"><span class="dot"></span>Closed beta, limited spots</div>
         <h1>Prove Your<br><span>Market Instinct.</span></h1>
-        <p class="sub">Build mock portfolios, analyze real fundamentals, climb the leaderboard. No real money — all real skill.</p>
+        <p class="sub">Build mock portfolios, analyze real fundamentals, climb the leaderboard. No real money, all real skill.</p>
         <a href="#beta" class="hero-btn">Apply for Closed Beta</a>
     </div>
 
@@ -185,13 +225,40 @@ footer p{color:rgba(255,255,255,.2);font-size:.8rem}
     </div>
 </section>
 
+<section class="hiw">
+    <h2>How It Works</h2>
+    <p class="desc">Three steps to prove you belong at the top of the leaderboard.</p>
+    <div class="steps">
+        <div class="step">
+            <div class="step-line"></div>
+            <div class="step-num">1</div>
+            <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg></div>
+            <h3>Swipe Stocks</h3>
+            <p>Browse stock cards with real charts and fundamentals. Swipe right to add to your portfolio, left to pass.</p>
+        </div>
+        <div class="step">
+            <div class="step-line"></div>
+            <div class="step-num">2</div>
+            <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M2 9h20"/><path d="M10 3v18"/></svg></div>
+            <h3>Build Your Portfolio</h3>
+            <p>Stack your picks into a mock portfolio. Your selections are scored against real market performance.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6-6 6 6"/><path d="M12 3v14"/><path d="M4 21h16"/></svg></div>
+            <h3>Climb the Leaderboard</h3>
+            <p>Compete against other players. Rise through the ranks and prove your market instinct.</p>
+        </div>
+    </div>
+</section>
+
 <section class="feat">
     <h2>Your portfolio. Your rank. Your bragging rights.</h2>
-    <p class="desc">No real money on the line — just your reputation. Pick stocks, build mock portfolios, and let the leaderboard decide.</p>
+    <p class="desc">No real money on the line, just your reputation. Pick stocks, build mock portfolios, and let the leaderboard decide.</p>
     <div class="fg">
         <div class="fc"><h3>Swipe & Stack</h3><p>Browse stocks like profiles. Each card shows charts and fundamentals. Swipe right to add to your portfolio, left to pass.</p></div>
         <div class="fc"><h3>Climb the Ranks</h3><p>Your picks get scored against real market performance. The leaderboard is ruthless, and your friends are watching.</p></div>
-        <div class="fc"><h3>Real Fundamentals</h3><p>P/E ratios, EBITDA, P/B, market cap — real data from real markets. No meme stocks, no hype.</p></div>
+        <div class="fc"><h3>Real Fundamentals</h3><p>P/E ratios, EBITDA, P/B, market cap. Real data from real markets. No meme stocks, no hype.</p></div>
     </div>
 </section>
 
