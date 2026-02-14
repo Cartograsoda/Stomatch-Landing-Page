@@ -206,11 +206,11 @@ footer p{color:rgba(255,255,255,.2);font-size:.8rem}
                     <div class="card teasing" id="c1">
                         <div class="card-head">
                             <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
-                            <div><div class="card-name">ARCANIS</div><div class="card-tick">(ARC)</div></div>
-                            <div class="card-tag">Semiconductors</div>
+                            <div><div class="card-name">PALANTIR</div><div class="card-tick">(PLTR)</div></div>
+                            <div class="card-tag">AI/Defense</div>
                         </div>
                         <div class="chart" id="ch1"></div>
-                        <div class="metrics"><div class="m"><span class="ml">P/E</span><span class="mv">28.3x</span></div><div class="m"><span class="ml">P/B</span><span class="mv">11.4x</span></div><div class="m"><span class="ml">EBITDA</span><span class="mv">$7.2B</span></div><div class="m"><span class="ml">Mkt Cap</span><span class="mv">$214B</span></div></div>
+                        <div class="metrics"><div class="m"><span class="ml">P/E</span><span class="mv">168x</span></div><div class="m"><span class="ml">P/B</span><span class="mv">21.3x</span></div><div class="m"><span class="ml">EBITDA</span><span class="mv">$1.1B</span></div><div class="m"><span class="ml">Mkt Cap</span><span class="mv">$120B</span></div></div>
                     </div>
                 </div>
                 <div class="hint">&larr; swipe to explore &rarr;</div>
@@ -278,23 +278,36 @@ footer p{color:rgba(255,255,255,.2);font-size:.8rem}
 <footer><div class="fl">stomatch</div><p>&copy; 2026 Stomatch. All rights reserved.</p></footer>
 
 <script>
-function mkChart(id,trend){
+function mkChart(id,trend,animate){
     var el=document.getElementById(id);if(!el)return;
-    var p=trend==='up'?25:65;
-    for(var i=0;i<20;i++){
-        var ch=(Math.random()-(trend==='up'?.38:.62))*(6+Math.random()*4);
-        var o=p;p=Math.max(5,Math.min(95,p+ch));
-        var g=p>o,bh=Math.abs(p-o);
+    var n=20,prices=[],base=trend==='up'?15:80;
+    prices[0]=base;
+    for(var i=1;i<n;i++){
+        var drift=trend==='up'?2.8:-2.8;
+        var noise=(Math.random()-0.5)*14;
+        prices[i]=Math.max(5,Math.min(95,prices[i-1]+drift+noise));
+    }
+    for(var i=0;i<n;i++){
+        var prev=i===0?prices[0]:prices[i-1];
+        var cur=prices[i];
+        var g=cur>=prev;
+        var diff=Math.abs(cur-prev);
+        var bh=Math.max(diff*3,5)+Math.random()*4;
+        var wTop=Math.random()*6+2;
+        var wBot=Math.random()*6+2;
         var d=document.createElement('div');
         d.className='c '+(g?'g':'r');
-        d.innerHTML='<div class="cw" style="height:'+(Math.random()*5+1)+'px"></div><div class="cb" style="height:'+Math.max(bh*1.2,3)+'px"></div><div class="cw" style="height:'+(Math.random()*5+1)+'px"></div>';
+        d.style.opacity=animate?'0':'1';
+        if(animate){d.style.transform='translateY(8px)';d.style.transition='opacity .3s ease, transform .3s ease';d.style.transitionDelay=(i*60)+'ms';}
+        d.innerHTML='<div class="cw" style="height:'+wTop+'px"></div><div class="cb" style="height:'+bh+'px"></div><div class="cw" style="height:'+wBot+'px"></div>';
         el.appendChild(d);
     }
+    if(animate){requestAnimationFrame(function(){requestAnimationFrame(function(){var bars=el.querySelectorAll('.c');for(var j=0;j<bars.length;j++){bars[j].style.opacity='1';bars[j].style.transform='translateY(0)';}});});}
 }
-mkChart('ch1','up');mkChart('ch2','up');mkChart('ch3','up');
+mkChart('ch1','up',true);mkChart('ch2','up',false);mkChart('ch3','up',false);
 
 var stocks=[
-    {n:'ARCANIS',t:'ARC',tg:'Semiconductors',pe:'28.3x',pb:'11.4x',eb:'$7.2B',mc:'$214B'},
+    {n:'PALANTIR',t:'PLTR',tg:'AI/Defense',pe:'168x',pb:'21.3x',eb:'$1.1B',mc:'$120B'},
     {n:'VELTRIS',t:'VLT',tg:'FinTech',pe:'22.7x',pb:'5.6x',eb:'$1.8B',mc:'$42B'},
     {n:'NEXORA',t:'NXR',tg:'Cloud Infra',pe:'31.4x',pb:'8.2x',eb:'$4.1B',mc:'$89B'},
     {n:'QUANTEX',t:'QTX',tg:'AI/ML',pe:'45.1x',pb:'14.2x',eb:'$2.9B',mc:'$156B'},
@@ -345,7 +358,7 @@ function reset(card){
     mv[0].textContent=d.pe;mv[1].textContent=d.pb;mv[2].textContent=d.eb;mv[3].textContent=d.mc;
     var ch=card.querySelector('.chart');ch.innerHTML='';
     ch.id='ch_'+Math.random().toString(36).substr(2,4);
-    mkChart(ch.id,Math.random()>.3?'up':'down');
+    mkChart(ch.id,Math.random()>.3?'up':'down',true);
 }
 function reorder(){
     var f=ids.pop();ids.unshift(f);
