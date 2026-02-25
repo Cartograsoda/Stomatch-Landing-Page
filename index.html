@@ -1,0 +1,3026 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stomatch | Prove Your Market Instinct</title>
+    <meta name="description"
+        content="Build mock portfolios, analyze real fundamentals, and climb the leaderboard. Stomatch lets you prove your stock-picking skills with zero risk.">
+    <meta name="keywords"
+        content="stock market game, mock portfolio, stock picking, investing competition, leaderboard, paper trading">
+    <meta name="author" content="Stomatch">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://stomatch.app/">
+    <link rel="icon" type="image/svg+xml" href="sm_icon.svg">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Stomatch | Prove Your Market Instinct">
+    <meta property="og:description"
+        content="Build mock portfolios, analyze real fundamentals, and climb the leaderboard. No real money, all real skill.">
+    <meta property="og:url" content="https://stomatch.app/">
+    <meta property="og:site_name" content="Stomatch">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Stomatch | Prove Your Market Instinct">
+    <meta name="twitter:description"
+        content="Build mock portfolios, analyze real fundamentals, and climb the leaderboard. No real money, all real skill.">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --text-dark: #1a1a2e;
+            --text-mid: #4a4a6a;
+            --text-light: #8888aa;
+            --lavender: #e8d0f0;
+            --pink-light: #f5d5e0;
+            --mint: #c5e8e0;
+            --green: #4ecb71;
+            --red: #ff6b8a;
+            --purple: #a78bfa;
+            --blue: #7dd3fc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--text-dark);
+            overflow-x: hidden
+        }
+
+        /* PAGE ROUTING */
+        .page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .page-active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* NAV */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, .85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0, 0, 0, .06)
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 1.5rem;
+            letter-spacing: -.03em
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #1a1a2e;
+            font-weight: 600;
+            font-size: .9rem;
+            padding: .5rem 1.2rem;
+            border-radius: 100px;
+            background: #1a1a2e;
+            color: #fff;
+            transition: transform .2s
+        }
+
+        nav a:hover {
+            transform: translateY(-2px)
+        }
+
+        .nav-link {
+            background: transparent !important;
+            color: var(--text-dark) !important;
+            padding: 0.5rem !important;
+        }
+
+        .nav-link:hover {
+            color: var(--purple) !important;
+        }
+
+        .nav-link-active {
+            color: var(--purple) !important;
+        }
+
+        .nav-logo {
+            background: transparent !important;
+            color: var(--text-dark) !important;
+            padding: 0 !important;
+        }
+
+        .nav-logo:hover {
+            transform: none !important;
+        }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+            background: radial-gradient(ellipse at 20% 20%, #e8d0f0 0%, transparent 50%), radial-gradient(ellipse at 80% 30%, #f5d5e0 0%, transparent 50%), linear-gradient(135deg, #f8f0f8, #f4eef8)
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            padding: .4rem 1rem;
+            background: rgba(255, 255, 255, .4);
+            border: 1px solid rgba(255, 255, 255, .5);
+            border-radius: 100px;
+            font-size: .8rem;
+            font-weight: 600;
+            color: #4a4a6a;
+            margin-bottom: 1.5rem
+        }
+
+        .badge .dot {
+            width: 7px;
+            height: 7px;
+            background: #4ecb71;
+            border-radius: 50%;
+            animation: pulse 2s infinite
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .4
+            }
+        }
+
+        h1 {
+            font-weight: 900;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            line-height: 1.05;
+            letter-spacing: -.04em;
+            margin-bottom: 1rem
+        }
+
+        h1 span {
+            background: linear-gradient(135deg, #a78bfa, #7ecfc2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text
+        }
+
+        .sub {
+            font-size: clamp(.95rem, 2vw, 1.15rem);
+            color: #4a4a6a;
+            line-height: 1.7;
+            max-width: 500px;
+            margin: 0 auto 2rem
+        }
+
+        .hero-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .9rem 1.8rem;
+            background: #1a1a2e;
+            color: #fff;
+            border-radius: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all .2s
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(26, 26, 46, .2)
+        }
+
+        /* PHONE */
+        .phone-wrap {
+            margin-top: 3rem;
+            animation: phoneHover 4s ease-in-out infinite;
+        }
+
+        @keyframes phoneHover {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .phone {
+            width: 270px;
+            height: 550px;
+            background: #1a1a2e;
+            border-radius: 42px;
+            padding: 10px;
+            position: relative;
+            box-shadow: 0 25px 80px rgba(26, 26, 46, .25)
+        }
+
+        .notch {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90px;
+            height: 25px;
+            background: #1a1a2e;
+            border-radius: 0 0 16px 16px;
+            z-index: 10
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 34px;
+            overflow: hidden;
+            position: relative;
+            background: radial-gradient(ellipse at 30% 20%, #e8d0f0 0%, transparent 60%), radial-gradient(ellipse at 70% 30%, #f5d5e0 0%, transparent 60%), linear-gradient(180deg, #f5eef8, #f4eef8)
+        }
+
+        .ph {
+            padding: 38px 18px 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start
+        }
+
+        .score-lbl {
+            font-size: .55rem;
+            color: #8888aa;
+            font-weight: 600
+        }
+
+        .score-val {
+            font-weight: 900;
+            font-size: 1.2rem
+        }
+
+        .streak {
+            text-align: center;
+            font-size: .5rem;
+            color: #8888aa;
+            font-weight: 600
+        }
+
+        .streak svg {
+            width: 18px;
+            height: 18px;
+            display: block;
+            margin: 0 auto 2px
+        }
+
+        /* CARDS */
+        .cards {
+            position: relative;
+            height: 340px;
+            padding: 0 14px;
+            margin-top: 4px
+        }
+
+        .card {
+            position: absolute;
+            width: calc(100% - 28px);
+            left: 14px;
+            height: 305px;
+            background: #fff;
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, .06);
+            cursor: grab;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: none;
+            transition: transform .3s ease
+        }
+
+        .card:active {
+            cursor: grabbing
+        }
+
+        .card:nth-child(1) {
+            z-index: 1;
+            transform: scale(.92) translateY(10px)
+        }
+
+        .card:nth-child(2) {
+            z-index: 2;
+            transform: scale(.96) translateY(5px)
+        }
+
+        .card:nth-child(3) {
+            z-index: 3
+        }
+
+        .card-head {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px
+        }
+
+        .card-ico {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: #f4f4f8;
+            display: flex;
+            align-items: center;
+            justify-content: center
+        }
+
+        .card-ico svg {
+            width: 16px;
+            height: 16px;
+            color: #1a1a2e
+        }
+
+        .card-name {
+            font-weight: 800;
+            font-size: 1.1rem;
+            letter-spacing: -.02em;
+            line-height: 1.2
+        }
+
+        .card-tick {
+            font-size: .6rem;
+            color: #8888aa
+        }
+
+        .card-tag {
+            margin-left: auto;
+            padding: 2px 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: .5rem;
+            font-weight: 600;
+            color: #4a4a6a;
+            white-space: nowrap
+        }
+
+        /* CHART */
+        .chart {
+            height: 140px;
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            padding: 6px 0;
+            position: relative
+        }
+
+        .chart::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(0deg, transparent, transparent calc(25% - 1px), #f5f5f8 calc(25% - 1px), #f5f5f8 25%);
+            pointer-events: none
+        }
+
+        .c {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 1
+        }
+
+        .cw {
+            width: 1px;
+            opacity: .5;
+            background: currentColor
+        }
+
+        .cb {
+            width: 5px;
+            border-radius: 1px;
+            min-height: 2px
+        }
+
+        .c.g {
+            color: #4ecb71
+        }
+
+        .c.g .cb {
+            background: #4ecb71
+        }
+
+        .c.r {
+            color: #ff6b8a
+        }
+
+        .c.r .cb {
+            background: #ff6b8a
+        }
+
+        .metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3px;
+            padding-top: 8px;
+            border-top: 1px solid #f0f0f0
+        }
+
+        .m {
+            text-align: center
+        }
+
+        .ml {
+            font-size: .45rem;
+            color: #8888aa;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 1px
+        }
+
+        .mv {
+            font-weight: 700;
+            font-size: .6rem;
+            display: block
+        }
+
+        .hint {
+            text-align: center;
+            padding: 6px;
+            font-size: .5rem;
+            color: #8888aa;
+            font-weight: 500;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+            animation: hf 3s infinite
+        }
+
+        @keyframes hf {
+
+            0%,
+            100% {
+                opacity: .3
+            }
+
+            50% {
+                opacity: 1
+            }
+        }
+
+        .tabs {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 46px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            background: rgba(255, 255, 255, .7);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(0, 0, 0, .05);
+            border-radius: 0 0 34px 34px;
+            padding: 0 18px
+        }
+
+        .tab {
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            color: #8888aa
+        }
+
+        .tab.on {
+            background: linear-gradient(135deg, #e8d0f0, #7dd3fc);
+            color: #fff
+        }
+
+        .tab svg {
+            width: 14px;
+            height: 14px
+        }
+
+        @keyframes tease {
+
+            0%,
+            100% {
+                transform: translateX(0) rotate(0)
+            }
+
+            30% {
+                transform: translateX(-20px) rotate(-2deg)
+            }
+
+            60% {
+                transform: translateX(0) rotate(0)
+            }
+
+            80% {
+                transform: translateX(14px) rotate(1.5deg)
+            }
+        }
+
+        .card.teasing {
+            animation: tease 4s ease-in-out infinite;
+            animation-delay: 2s
+        }
+
+        .card.dragging {
+            animation: none !important;
+            transition: none !important
+        }
+
+        .card.gone-r {
+            transform: translateX(400px) rotate(20deg) !important;
+            opacity: 0;
+            transition: all .4s ease-out !important
+        }
+
+        .card.gone-l {
+            transform: translateX(-400px) rotate(-20deg) !important;
+            opacity: 0;
+            transition: all .4s ease-out !important
+        }
+
+        /* REVEAL ANIMATIONS */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-stagger>* {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal-stagger.visible>* {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* STOMATCH TODAY - SCROLL WALKTHROUGH */
+        .stomatch-today {
+            position: relative;
+            background: #fff;
+        }
+
+        .st-scroll-height {
+            height: 200vh;
+            position: relative;
+        }
+
+        .st-sticky {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            gap: 4rem;
+        }
+
+        .st-text-col {
+            flex: 1;
+            position: relative;
+            height: 300px;
+            max-width: 480px;
+        }
+
+        .st-text-block {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%) translateY(30px);
+            opacity: 0;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        .st-text-block.active {
+            opacity: 1;
+            transform: translateY(-50%) translateY(0);
+            pointer-events: all;
+        }
+
+        .st-text-block h2 {
+            font-weight: 900;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+        }
+
+        .st-text-block p {
+            color: var(--text-mid);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .st-phone-col {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .st-phone-mockup {
+            width: 270px;
+            height: 550px;
+            background: #1a1a2e;
+            border-radius: 42px;
+            padding: 10px;
+            position: relative;
+            box-shadow: 0 25px 80px rgba(26, 26, 46, .25);
+            transform: translateY(0);
+            transition: transform 0.3s;
+        }
+
+        .st-notch {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90px;
+            height: 25px;
+            background: #1a1a2e;
+            border-radius: 0 0 16px 16px;
+            z-index: 10;
+        }
+
+        .st-screen {
+            width: 100%;
+            height: 100%;
+            border-radius: 34px;
+            overflow: hidden;
+            position: relative;
+            background: #f5f5f8;
+        }
+
+        .st-layer {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            background: #f5f5f8;
+            z-index: 1;
+        }
+
+        .st-layer.active {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .st-layer-1 {
+            background: radial-gradient(ellipse at 30% 20%, #e8d0f0 0%, transparent 60%), radial-gradient(ellipse at 70% 30%, #f5d5e0 0%, transparent 60%), linear-gradient(180deg, #f5eef8, #f4eef8);
+            padding: 48px 16px 16px;
+        }
+
+        .st-layer-2 {
+            padding: 48px 12px 12px;
+        }
+
+        .st-layer-3 {
+            padding: 48px 12px 12px;
+        }
+
+        .st-mini-card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, .06);
+            height: 305px;
+            width: calc(100% - 28px);
+            position: absolute;
+            left: 14px;
+            top: 110px;
+            animation: tease 4s ease-in-out infinite;
+            animation-delay: 1s;
+        }
+
+        .port-head {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .port-head h4 {
+            font-size: 0.8rem;
+            color: var(--text-mid);
+            margin-bottom: 4px;
+        }
+
+        .port-head h3 {
+            font-size: 1.8rem;
+            font-weight: 900;
+        }
+
+        .port-badge {
+            display: inline-block;
+            background: rgba(78, 203, 113, 0.15);
+            color: var(--green);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            margin-top: 6px;
+        }
+
+        .port-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        .port-item-l strong {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .port-item-l span {
+            font-size: 0.65rem;
+            color: var(--text-light);
+        }
+
+        .port-item-m {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .port-item-r {
+            text-align: right;
+        }
+
+        .port-item-r strong {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 800;
+        }
+
+        .port-item-r span {
+            font-size: 0.65rem;
+        }
+
+        .port-item.g strong {
+            color: var(--green);
+        }
+
+        .port-item.r strong {
+            color: var(--red);
+        }
+
+        .mini-line {
+            width: 32px;
+            height: 16px;
+        }
+
+        .ld-list {
+            margin-top: 10px;
+        }
+
+        .ld-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #fff;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        .ld-row.you {
+            background: var(--purple);
+            color: #fff;
+        }
+
+        .ld-row.you .ld-user {
+            color: #fff;
+        }
+
+        .ld-row.you .ld-score {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .ld-rank {
+            font-weight: 800;
+            font-size: 0.85rem;
+            width: 16px;
+            text-align: center;
+            color: var(--text-light);
+        }
+
+        .ld-row.you .ld-rank {
+            color: #fff;
+        }
+
+        .ld-user {
+            font-weight: 700;
+            font-size: 0.7rem;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .ld-score {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-align: right;
+            color: var(--text-mid);
+        }
+
+        .ld-ret {
+            font-size: 0.7rem;
+            color: var(--green);
+            font-weight: 800;
+            width: 36px;
+            text-align: right;
+        }
+
+        .ld-row.you .ld-ret {
+            color: #fff;
+        }
+
+        .st-mobile-pair {
+            display: none;
+        }
+
+        /* INTERACTIVE DEMO */
+        .demo {
+            padding: 8rem 2rem;
+            background: radial-gradient(circle at center, #f8f6fb 0%, #fff 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo h2 {
+            font-weight: 900;
+            font-size: clamp(2rem, 4vw, 3rem);
+            margin-bottom: 4rem;
+            letter-spacing: -0.03em;
+        }
+
+        .demo-area {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            height: 380px;
+            margin: 0 auto;
+        }
+
+        .halo-wrap {
+            position: absolute;
+            inset: -200px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .halo {
+            position: absolute;
+            top: 50%;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            filter: blur(40px);
+            transition: opacity 0.1s;
+        }
+
+        .halo.green {
+            right: -100px;
+            background: var(--green);
+        }
+
+        .halo.red {
+            left: -100px;
+            background: var(--red);
+        }
+
+        .demo-cards {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .democard {
+            position: absolute;
+            inset: 0;
+            background: #fff;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
+            transition: transform 0.3s ease, opacity 0.4s;
+            display: flex;
+            flex-direction: column;
+            /* isolation: isolate creates a self-contained stacking context so
+               z-index children (chart bars) cannot bleed through to sibling cards */
+            isolation: isolate;
+        }
+
+        /* Explicit stacking order: d6 (1st in DOM) at bottom, d1 (6th) on top */
+        .demo-cards .democard:nth-child(1) {
+            z-index: 1;
+        }
+
+        .demo-cards .democard:nth-child(2) {
+            z-index: 2;
+        }
+
+        .demo-cards .democard:nth-child(3) {
+            z-index: 3;
+        }
+
+        .demo-cards .democard:nth-child(4) {
+            z-index: 4;
+        }
+
+        .demo-cards .democard:nth-child(5) {
+            z-index: 5;
+        }
+
+        .demo-cards .democard:nth-child(6) {
+            z-index: 6;
+        }
+
+        .democard:active {
+            cursor: grabbing;
+        }
+
+        .democard.dragging {
+            transition: none !important;
+        }
+
+        .democard.gone-r {
+            transform: translateX(600px) rotate(30deg) !important;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .democard.gone-l {
+            transform: translateX(-600px) rotate(-30deg) !important;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .democard .card-head {
+            margin-bottom: 12px;
+        }
+
+        .democard .card-name {
+            font-size: 1.4rem;
+        }
+
+        .democard .chart {
+            height: 180px;
+            flex: 1;
+            margin-bottom: 10px;
+            position: relative;
+            background: #fff;
+        }
+
+        .democard .metrics {
+            border-top: 1px solid #f0f0f0;
+            padding-top: 12px;
+        }
+
+        .democard .ml {
+            font-size: 0.55rem;
+        }
+
+        .democard .mv {
+            font-size: 0.8rem;
+        }
+
+        .demo-res {
+            position: absolute;
+            inset: 0;
+            background: #fff;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateY(30px);
+            pointer-events: none;
+            transition: all 0.5s;
+        }
+
+        .demo-res.show {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: all;
+        }
+
+        .demo-res h3 {
+            font-size: 1.2rem;
+            font-weight: 900;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .demo-res p {
+            font-size: 0.85rem;
+            color: var(--text-mid);
+            margin-bottom: 24px;
+        }
+
+        .demo-res .hero-btn {
+            font-size: 0.9rem;
+            padding: 0.7rem 1.4rem;
+        }
+
+        /* LEADERBOARD PREVIEW */
+        .lb-preview {
+            padding: 8rem 2rem;
+            background: var(--text-dark);
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .lb-preview h2 {
+            font-weight: 900;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            letter-spacing: -0.03em;
+            margin-bottom: 0.5rem;
+        }
+
+        .lb-preview p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.1rem;
+            margin-bottom: 4rem;
+        }
+
+        .lb-table {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .lb-table-wrap {
+            position: relative;
+            height: 640px;
+        }
+
+        .lb-tr {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 12px;
+            padding: 12px 20px;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: absolute;
+            width: 100%;
+            height: 56px;
+            left: 0;
+        }
+
+        .lb-tr-top1 {
+            background: linear-gradient(90deg, rgba(255, 215, 0, 0.1), rgba(255, 255, 255, 0.04));
+        }
+
+        .lb-tr-top2 {
+            background: linear-gradient(90deg, rgba(192, 192, 192, 0.1), rgba(255, 255, 255, 0.04));
+        }
+
+        .lb-tr-top3 {
+            background: linear-gradient(90deg, rgba(205, 127, 50, 0.1), rgba(255, 255, 255, 0.04));
+        }
+
+        .lbr-num {
+            font-weight: 900;
+            width: 30px;
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.3);
+            text-align: left;
+        }
+
+        .lb-tr-top1 .lbr-num {
+            color: #FFD700;
+        }
+
+        .lb-tr-top2 .lbr-num {
+            color: #C0C0C0;
+        }
+
+        .lb-tr-top3 .lbr-num {
+            color: #CD7F32;
+        }
+
+        .lbr-ava {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 0.8rem;
+            background: var(--purple);
+            color: #fff;
+        }
+
+        .lbr-ava.c1 {
+            background: #ff6b8a;
+        }
+
+        .lbr-ava.c2 {
+            background: #4ecb71;
+        }
+
+        .lbr-ava.c3 {
+            background: #7dd3fc;
+            color: #1a1a2e;
+        }
+
+        .lbr-ava.c4 {
+            background: #e8d0f0;
+            color: #1a1a2e;
+        }
+
+        .lbr-ava.c5 {
+            background: #FFD700;
+            color: #1a1a2e;
+        }
+
+        .lbr-usr {
+            flex: 1;
+            text-align: left;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .lbr-ret {
+            color: var(--green);
+            font-weight: 800;
+            font-size: 0.95rem;
+            width: 70px;
+            text-align: right;
+        }
+
+        .lbr-pts {
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 600;
+            font-size: 0.9rem;
+            width: 80px;
+            text-align: right;
+        }
+
+        /* THE VISION */
+        .vision {
+            padding: 8rem 2rem;
+            background: #fff;
+            text-align: center;
+        }
+
+        .vision-h {
+            font-weight: 900;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            line-height: 1.15;
+            letter-spacing: -0.04em;
+            margin-bottom: 4rem;
+        }
+
+        .vision-h span {
+            background: linear-gradient(135deg, var(--purple), #7ecfc2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .v-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .v-card {
+            padding: 2.5rem;
+            border-radius: 20px;
+            background: #fafafa;
+            border: 1px solid #f0f0f0;
+            text-align: left;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .v-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.06);
+        }
+
+        .v-ico {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .v-ico svg {
+            width: 28px;
+            height: 28px;
+            color: var(--text-dark);
+        }
+
+        .v-card h3 {
+            font-weight: 800;
+            font-size: 1.3rem;
+            margin-bottom: 0.6rem;
+            letter-spacing: -0.01em;
+        }
+
+        .v-card p {
+            color: var(--text-mid);
+            line-height: 1.6;
+        }
+
+        /* TECH STRIP */
+        .tech-strip {
+            padding: 3rem 2rem;
+            background: #f8f8f8;
+            text-align: center;
+        }
+
+        .th-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #aaa;
+            letter-spacing: 0.15em;
+            margin-bottom: 1.2rem;
+        }
+
+        .th-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .th-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .th-item:not(:last-child)::after {
+            content: "\00B7";
+            color: #ccc;
+        }
+
+        /* BETA */
+        .beta {
+            padding: 5rem 2rem;
+            background: #1a1a2e;
+            text-align: center
+        }
+
+        .waitlist-count {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 14px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--mint);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .beta h2 {
+            font-weight: 900;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            color: #fff;
+            letter-spacing: -.03em;
+            margin-bottom: .5rem
+        }
+
+        .beta>p {
+            color: rgba(255, 255, 255, .45);
+            margin-bottom: 2rem;
+            max-width: 420px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6
+        }
+
+        .bf {
+            max-width: 420px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: .8rem;
+            text-align: left
+        }
+
+        .bf input,
+        .bf select,
+        .bf textarea {
+            padding: .8rem 1rem;
+            background: rgba(255, 255, 255, .07);
+            border: 1px solid rgba(255, 255, 255, .12);
+            border-radius: 10px;
+            color: #fff;
+            font-family: inherit;
+            font-size: .9rem;
+            outline: none;
+            transition: border .3s
+        }
+
+        .bf input::placeholder,
+        .bf textarea::placeholder {
+            color: rgba(255, 255, 255, .25)
+        }
+
+        .bf input:focus,
+        .bf select:focus,
+        .bf textarea:focus {
+            border-color: #a78bfa
+        }
+
+        .bf select {
+            cursor: pointer;
+            -webkit-appearance: none
+        }
+
+        .bf select option {
+            background: #1a1a2e;
+            color: #fff
+        }
+
+        .bf textarea {
+            resize: vertical;
+            min-height: 70px
+        }
+
+        .bf .row {
+            display: flex;
+            gap: .8rem
+        }
+
+        .bf .row>* {
+            flex: 1
+        }
+
+        .bf button {
+            padding: .9rem;
+            background: #fff;
+            color: #1a1a2e;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all .2s;
+            font-family: inherit
+        }
+
+        .bf button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, .15)
+        }
+
+        .bf button:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+            transform: none !important
+        }
+
+        .success {
+            display: none;
+            padding: 2rem 0;
+            text-align: center
+        }
+
+        .success.show {
+            display: block;
+            animation: fiu .4s ease-out
+        }
+
+        .success h3 {
+            color: #fff;
+            font-weight: 800;
+            font-size: 1.3rem;
+            margin-bottom: .4rem
+        }
+
+        .success p {
+            color: rgba(255, 255, 255, .45)
+        }
+
+        footer {
+            padding: 2.5rem 2rem 1.5rem 2rem;
+            background: #141425;
+            text-align: center
+        }
+
+        footer .fl {
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, .3);
+            margin-bottom: 1.5rem
+        }
+
+        footer .tech-strip-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 2rem;
+            margin-top: 2rem;
+        }
+
+        footer .th-title {
+            color: rgba(255, 255, 255, 0.2);
+            margin-bottom: 0.8rem;
+        }
+
+        footer .th-list {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.85rem;
+        }
+
+        footer .th-item:not(:last-child)::after {
+            color: rgba(255, 255, 255, 0.1);
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, .2);
+            font-size: .8rem
+        }
+
+        /* FUTURES FEED */
+        .futures-feed {
+            padding: 6rem 2rem;
+            background: #f9f9fc;
+        }
+
+        .futures-feed-inner {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .futures-feed-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .section-label {
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            font-size: .72rem;
+            color: var(--text-light);
+            font-weight: 700;
+            margin-bottom: .6rem;
+            display: block;
+        }
+
+        .futures-feed-header h2 {
+            font-weight: 900;
+            font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+            letter-spacing: -.03em;
+            margin-bottom: .7rem;
+        }
+
+        .futures-feed-header p {
+            color: var(--text-mid);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .feed-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .feed-item {
+            background: #fff;
+            border: 1px solid #ececf0;
+            border-radius: 16px;
+            padding: 1.4rem 1.6rem;
+            cursor: pointer;
+            transition: box-shadow .2s, transform .2s;
+        }
+
+        .feed-item:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, .06);
+            transform: translateY(-2px);
+        }
+
+        .feed-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: .85rem;
+        }
+
+        .feed-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--purple);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: .72rem;
+            flex-shrink: 0;
+        }
+
+        .feed-author-info strong {
+            display: block;
+            font-size: .85rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .feed-author-info span {
+            font-size: .73rem;
+            color: var(--text-light);
+        }
+
+        .feed-item h3 {
+            font-size: .95rem;
+            font-weight: 800;
+            line-height: 1.4;
+            margin-bottom: .45rem;
+            color: var(--text-dark);
+            letter-spacing: -.01em;
+        }
+
+        .feed-item>p {
+            font-size: .85rem;
+            color: var(--text-mid);
+            line-height: 1.6;
+            margin-bottom: .85rem;
+        }
+
+        .feed-tags {
+            display: flex;
+            gap: .45rem;
+            flex-wrap: wrap;
+        }
+
+        .feed-tag {
+            padding: 3px 10px;
+            border-radius: 100px;
+            font-size: .68rem;
+            font-weight: 600;
+            background: #f0f0f5;
+            color: var(--text-mid);
+        }
+
+        /* FUTURES DM */
+        .futures-dm {
+            padding: 5rem 2rem;
+            background: #1a1a2e;
+            color: #fff;
+        }
+
+        .dm-inner {
+            max-width: 820px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+        }
+
+        .dm-text {
+            flex: 1;
+        }
+
+        .dm-label {
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            font-size: .72rem;
+            color: rgba(255, 255, 255, .4);
+            font-weight: 700;
+            margin-bottom: .7rem;
+            display: block;
+        }
+
+        .dm-text h2 {
+            font-weight: 900;
+            font-size: clamp(1.6rem, 3vw, 2.4rem);
+            letter-spacing: -.03em;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .dm-text p {
+            color: rgba(255, 255, 255, .55);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        .dm-mockup {
+            flex-shrink: 0;
+            width: 280px;
+        }
+
+        .dm-bubble-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: .65rem;
+        }
+
+        .dm-bubble {
+            padding: .75rem 1rem;
+            border-radius: 14px;
+            font-size: .8rem;
+            line-height: 1.55;
+            max-width: 220px;
+        }
+
+        .dm-bubble.in {
+            background: rgba(255, 255, 255, .08);
+            color: rgba(255, 255, 255, .85);
+            border-radius: 14px 14px 14px 4px;
+        }
+
+        .dm-bubble.out {
+            background: var(--purple);
+            color: #fff;
+            align-self: flex-end;
+            border-radius: 14px 14px 4px 14px;
+        }
+
+        .dm-bubble strong {
+            display: block;
+            font-size: .68rem;
+            opacity: .55;
+            margin-bottom: .2rem;
+        }
+
+        @media(max-width: 768px) {
+            .st-sticky {
+                display: none;
+            }
+
+            .st-scroll-height {
+                display: none;
+            }
+
+            .st-mobile-pair {
+                display: block;
+                text-align: center;
+                padding: 4rem 2rem;
+                border-bottom: 1px solid #f0f0f0;
+            }
+
+            .st-mobile-pair:last-child {
+                border-bottom: none;
+            }
+
+            .st-mobile-pair .st-text-block {
+                position: static;
+                transform: none;
+                opacity: 1;
+                pointer-events: all;
+                margin-bottom: 2rem;
+            }
+
+            .st-mobile-pair .st-phone-mockup {
+                margin: 0 auto;
+                transform: scale(0.9);
+            }
+
+            .v-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lb-tr {
+                padding: 12px;
+            }
+
+            .lbr-pts {
+                display: none;
+            }
+
+            .lb-preview p {
+                margin-bottom: 2rem;
+            }
+
+            .fg {
+                grid-template-columns: 1fr
+            }
+
+            .phone {
+                width: 240px;
+                height: 490px
+            }
+
+            .bf .row {
+                flex-direction: column
+            }
+
+            nav a {
+                font-size: .8rem;
+                padding: .4rem 1rem
+            }
+
+            .dm-inner {
+                flex-direction: column;
+                gap: 2.5rem;
+            }
+
+            .dm-mockup {
+                width: 100%;
+            }
+
+            .dm-bubble {
+                max-width: 80%;
+            }
+        }
+    </style>
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+</head>
+
+<body>
+
+    <!-- NAV (always visible) -->
+    <nav>
+        <div style="display: flex; align-items: center; gap: 2rem;">
+            <a href="#home" class="nav-logo" style="text-decoration: none;">
+                <div class="logo"><img src="sm_icon.svg" alt="Stomatch" width="28" height="28"
+                        style="vertical-align:middle;margin-right:.4rem">stomatch</div>
+            </a>
+            <div class="nav-links" style="display: flex; gap: 1.5rem;">
+                <a href="#today" class="nav-link" data-page="today">Today</a>
+                <a href="#future" class="nav-link" data-page="future">Future</a>
+            </div>
+        </div>
+        <a href="#beta" id="nav-beta-btn">Apply for Beta</a>
+    </nav>
+
+    <!-- PAGE: HOME -->
+    <div class="page page-active" id="page-home">
+        <section class="hero">
+            <div class="hero-content reveal-stagger">
+                <div class="badge"><span class="dot"></span>Closed beta, limited spots</div>
+                <h1>Prove Your<br><span>Market Instinct.</span></h1>
+                <p class="sub">Build mock portfolios, analyze real fundamentals, climb the leaderboard. No real money,
+                    all
+                    real skill.</p>
+                <a href="#beta" class="hero-btn">Apply for Closed Beta</a>
+            </div>
+
+            <div class="phone-wrap reveal">
+                <div class="phone">
+                    <div class="notch"></div>
+                    <div class="screen">
+                        <div class="halo-wrap">
+                            <div class="halo green" id="hero-halo-g"></div>
+                            <div class="halo red" id="hero-halo-r"></div>
+                        </div>
+                        <div class="ph">
+                            <div>
+                                <div class="score-lbl">Score:</div>
+                                <div class="score-val">1550 pts</div>
+                            </div>
+                            <div class="streak"><svg viewBox="0 0 24 24" fill="#1a1a2e">
+                                    <path
+                                        d="M12 23c-3.6 0-7-2.4-7-7 0-3.2 2.1-6.2 4-8.2L12 5l3 2.8c1.9 2 4 5 4 8.2 0 4.6-3.4 7-7 7z" />
+                                </svg>5 Day</div>
+                        </div>
+                        <div class="cards" id="ca">
+                            <div class="card" id="c3">
+                                <div class="card-head">
+                                    <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <path d="M8 12h8M12 8v8" />
+                                        </svg></div>
+                                    <div>
+                                        <div class="card-name">NEXORA</div>
+                                        <div class="card-tick">(NXR)</div>
+                                    </div>
+                                    <div class="card-tag">Cloud Infra</div>
+                                </div>
+                                <div class="chart" id="ch3"></div>
+                                <div class="metrics">
+                                    <div class="m"><span class="ml">P/E</span><span class="mv">31.4x</span></div>
+                                    <div class="m"><span class="ml">P/B</span><span class="mv">8.2x</span></div>
+                                    <div class="m"><span class="ml">EBITDA</span><span class="mv">$4.1B</span></div>
+                                    <div class="m"><span class="ml">Mkt Cap</span><span class="mv">$89B</span></div>
+                                </div>
+                            </div>
+                            <div class="card" id="c2">
+                                <div class="card-head">
+                                    <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2">
+                                            <polygon
+                                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                        </svg></div>
+                                    <div>
+                                        <div class="card-name">VELTRIS</div>
+                                        <div class="card-tick">(VLT)</div>
+                                    </div>
+                                    <div class="card-tag">FinTech</div>
+                                </div>
+                                <div class="chart" id="ch2"></div>
+                                <div class="metrics">
+                                    <div class="m"><span class="ml">P/E</span><span class="mv">22.7x</span></div>
+                                    <div class="m"><span class="ml">P/B</span><span class="mv">5.6x</span></div>
+                                    <div class="m"><span class="ml">EBITDA</span><span class="mv">$1.8B</span></div>
+                                    <div class="m"><span class="ml">Mkt Cap</span><span class="mv">$42B</span></div>
+                                </div>
+                            </div>
+                            <div class="card teasing" id="c1">
+                                <div class="card-head">
+                                    <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2">
+                                            <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                            <path d="M2 17l10 5 10-5" />
+                                            <path d="M2 12l10 5 10-5" />
+                                        </svg></div>
+                                    <div>
+                                        <div class="card-name">PALANTIR</div>
+                                        <div class="card-tick">(PLTR)</div>
+                                    </div>
+                                    <div class="card-tag">AI/Defense</div>
+                                </div>
+                                <div class="chart" id="ch1"></div>
+                                <div class="metrics">
+                                    <div class="m"><span class="ml">P/E</span><span class="mv">168x</span></div>
+                                    <div class="m"><span class="ml">P/B</span><span class="mv">21.3x</span></div>
+                                    <div class="m"><span class="ml">EBITDA</span><span class="mv">$1.1B</span></div>
+                                    <div class="m"><span class="ml">Mkt Cap</span><span class="mv">$120B</span></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="hint">&larr; swipe to explore &rarr;</div>
+                        <div class="tabs">
+                            <div class="tab on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                                    <rect x="14" y="14" width="7" height="7" rx="1" />
+                                </svg></div>
+                            <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                                    <path d="M2 8h20" />
+                                </svg></div>
+                            <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 16 14" />
+                                </svg></div>
+                            <div class="tab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                    <circle cx="12" cy="7" r="4" />
+                                </svg></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="lb-preview reveal">
+            <h2>The leaderboard is ruthless.</h2>
+            <p>Your friends are watching.</p>
+            <div class="lb-table">
+                <div class="lb-table-wrap" id="lb-wrap">
+                    <!-- Rows injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <section class="beta" id="beta">
+            <h2>Apply for closed beta</h2>
+            <div class="waitlist-count" id="waitlist-count">Getting waitlist count...</div>
+            <p>Limited spots for users who live and breathe markets. Think you've got what it takes?</p>
+            <form class="bf" id="bf">
+                <input type="text" name="user_name" placeholder="Your name" required>
+                <input type="email" name="user_email" placeholder="Email" required>
+                <select name="experience" required>
+                    <option value="" disabled selected>Experience level</option>
+                    <option>Beginner</option>
+                    <option>Intermediate</option>
+                    <option>Advanced</option>
+                    <option>Finance pro</option>
+                </select>
+                <textarea name="message" placeholder="What excites you about competing on stock picks?"
+                    rows="3"></textarea>
+                <button type="submit" id="submitBtn">Submit Application</button>
+            </form>
+            <div class="success" id="suc">
+                <h3>You're on the list.</h3>
+                <p>We'll reach out when your spot opens up.</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- PAGE: TODAY -->
+    <div class="page" id="page-today">
+        <section class="stomatch-today" id="stomatch-today" style="padding-top: 5rem;">
+            <!-- Desktop Sticky Flow -->
+            <div class="st-scroll-height">
+                <div class="st-sticky">
+                    <div class="st-text-col">
+                        <div class="st-text-block" id="st-txt-1">
+                            <h2 class="reveal-stagger">Swipe through real stocks</h2>
+                            <p class="reveal-stagger">Every card is a real company with real fundamentals. P/E ratio,
+                                EBITDA, P/B, market cap — the numbers that matter. Swipe right to add to your portfolio,
+                                left to pass.</p>
+                        </div>
+                        <div class="st-text-block" id="st-txt-2">
+                            <h2>Build your portfolio</h2>
+                            <p>Your picks aren't just for show. Every stock you swipe right on enters your mock
+                                portfolio
+                                and gets tracked against real market performance. No real money — just conviction.</p>
+                        </div>
+                        <div class="st-text-block" id="st-txt-3">
+                            <h2>Climb the leaderboard</h2>
+                            <p>Your portfolio is scored against every other player. Watch your rank rise — or fall. The
+                                leaderboard doesn't care about your thesis, only your results.</p>
+                        </div>
+                    </div>
+                    <div class="st-phone-col reveal">
+                        <div class="st-phone-mockup">
+                            <div class="st-notch"></div>
+                            <div class="st-screen">
+                                <div class="st-layer st-layer-1" id="st-lyr-1">
+                                    <div class="st-mini-card">
+                                        <div class="card-head">
+                                            <div class="card-ico"><svg viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <rect x="3" y="3" width="7" height="7" rx="1" />
+                                                    <rect x="14" y="3" width="7" height="7" rx="1" />
+                                                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                                                    <rect x="14" y="14" width="7" height="7" rx="1" />
+                                                </svg></div>
+                                            <div>
+                                                <div class="card-name" style="font-size:1rem;">NEXORA</div>
+                                                <div class="card-tick" style="font-size:0.5rem;">(NXR)</div>
+                                            </div>
+                                        </div>
+                                        <div class="chart" id="st-ch-desktop" style="height:140px; margin-bottom: 2px;">
+                                        </div>
+                                        <div class="metrics"
+                                            style="padding-top:6px; border-top:1px solid #f0f0f0; display:flex; justify-content:space-between; margin-top:10px;">
+                                            <div class="m"><span class="ml">P/E</span><span class="mv"
+                                                    style="font-size:0.5rem;">31.4x</span></div>
+                                            <div class="m"><span class="ml">P/B</span><span class="mv"
+                                                    style="font-size:0.5rem;">8.2x</span></div>
+                                            <div class="m"><span class="ml">EBITDA</span><span class="mv"
+                                                    style="font-size:0.5rem;">$4.1B</span></div>
+                                            <div class="m"><span class="ml">Mkt Cap</span><span class="mv"
+                                                    style="font-size:0.5rem;">$89B</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="st-layer st-layer-2" id="st-lyr-2">
+                                    <div class="port-head">
+                                        <h4>Your Portfolio</h4>
+                                        <h3>$12,450</h3>
+                                        <div class="port-badge">+4.2%</div>
+                                    </div>
+                                    <div class="port-list">
+                                        <div class="port-item g">
+                                            <div class="port-item-l"><strong>ARCANIS</strong><span>ARC</span></div>
+                                            <div class="port-item-m"><svg class="mini-line" viewBox="0 0 32 16">
+                                                    <path d="M0,12 L8,10 L16,14 L24,4 L32,6" fill="none"
+                                                        stroke="currentColor" stroke-width="2" />
+                                                </svg></div>
+                                            <div class="port-item-r"><strong>+2.4%</strong></div>
+                                        </div>
+                                        <div class="port-item g">
+                                            <div class="port-item-l"><strong>VELTRIS</strong><span>VLT</span></div>
+                                            <div class="port-item-m"><svg class="mini-line" viewBox="0 0 32 16">
+                                                    <path d="M0,14 L8,11 L16,12 L24,6 L32,3" fill="none"
+                                                        stroke="currentColor" stroke-width="2" />
+                                                </svg></div>
+                                            <div class="port-item-r"><strong>+1.8%</strong></div>
+                                        </div>
+                                        <div class="port-item r">
+                                            <div class="port-item-l"><strong>NEXORA</strong><span>NXR</span></div>
+                                            <div class="port-item-m"><svg class="mini-line" viewBox="0 0 32 16">
+                                                    <path d="M0,4 L8,6 L16,3 L24,12 L32,10" fill="none"
+                                                        stroke="currentColor" stroke-width="2" />
+                                                </svg></div>
+                                            <div class="port-item-r"><strong>-0.9%</strong></div>
+                                        </div>
+                                        <div class="port-item g">
+                                            <div class="port-item-l"><strong>SOLWIND</strong><span>SWD</span></div>
+                                            <div class="port-item-m"><svg class="mini-line" viewBox="0 0 32 16">
+                                                    <path d="M0,11 L12,11 L20,5 L32,2" fill="none" stroke="currentColor"
+                                                        stroke-width="2" />
+                                                </svg></div>
+                                            <div class="port-item-r"><strong>+3.1%</strong></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="st-layer st-layer-3" id="st-lyr-3">
+                                    <div class="port-head" style="margin-bottom:10px;">
+                                        <h4 style="margin:0;">Leaderboard</h4>
+                                    </div>
+                                    <div class="ld-list">
+                                        <div class="ld-row">
+                                            <div class="ld-rank">1</div>
+                                            <div class="ld-user">alpha_trader</div>
+                                            <div class="ld-ret">+12.4%</div>
+                                            <div class="ld-score">2450</div>
+                                        </div>
+                                        <div class="ld-row">
+                                            <div class="ld-rank">2</div>
+                                            <div class="ld-user">bullrun_99</div>
+                                            <div class="ld-ret">+11.1%</div>
+                                            <div class="ld-score">2310</div>
+                                        </div>
+                                        <div class="ld-row you">
+                                            <div class="ld-rank">3</div>
+                                            <div class="ld-user">YOU</div>
+                                            <div class="ld-ret">+8.4%</div>
+                                            <div class="ld-score">2040</div>
+                                        </div>
+                                        <div class="ld-row">
+                                            <div class="ld-rank">4</div>
+                                            <div class="ld-user">marketking</div>
+                                            <div class="ld-ret">+8.2%</div>
+                                            <div class="ld-score">2010</div>
+                                        </div>
+                                        <div class="ld-row">
+                                            <div class="ld-rank">5</div>
+                                            <div class="ld-user">yoloquant</div>
+                                            <div class="ld-ret">+7.5%</div>
+                                            <div class="ld-score">1890</div>
+                                        </div>
+                                        <div class="ld-row">
+                                            <div class="ld-rank">6</div>
+                                            <div class="ld-user">defi_dan</div>
+                                            <div class="ld-ret">+6.8%</div>
+                                            <div class="ld-score">1750</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Stacked Flow -->
+            <div class="st-mobile-pair reveal">
+                <div class="st-text-block">
+                    <h2>Swipe through real stocks</h2>
+                    <p>Every card is a real company with real fundamentals. P/E ratio, EBITDA, P/B, market cap — the
+                        numbers that matter. Swipe right to add to your portfolio, left to pass.</p>
+                </div>
+                <div class="st-phone-mockup">
+                    <div class="st-notch"></div>
+                    <div class="st-screen">
+                        <div class="st-layer st-layer-1 active" style="z-index:10;">
+                            <div class="st-mini-card">
+                                <div class="card-head">
+                                    <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2">
+                                            <rect x="3" y="3" width="7" height="7" rx="1" />
+                                            <rect x="14" y="3" width="7" height="7" rx="1" />
+                                            <rect x="3" y="14" width="7" height="7" rx="1" />
+                                            <rect x="14" y="14" width="7" height="7" rx="1" />
+                                        </svg></div>
+                                    <div>
+                                        <div class="card-name" style="font-size:1rem;">NEXORA</div>
+                                        <div class="card-tick" style="font-size:0.5rem;">(NXR)</div>
+                                    </div>
+                                </div>
+                                <div class="chart" id="st-ch-mobile" style="height:140px; margin-bottom: 2px;"></div>
+                                <div class="metrics"
+                                    style="padding-top:6px; border-top:1px solid #f0f0f0; display:flex; justify-content:space-between; margin-top:10px;">
+                                    <div class="m"><span class="ml">P/E</span><span class="mv"
+                                            style="font-size:0.5rem;">31.4x</span></div>
+                                    <div class="m"><span class="ml">P/B</span><span class="mv"
+                                            style="font-size:0.5rem;">8.2x</span></div>
+                                    <div class="m"><span class="ml">EBITDA</span><span class="mv"
+                                            style="font-size:0.5rem;">$4.1B</span></div>
+                                    <div class="m"><span class="ml">Mkt Cap</span><span class="mv"
+                                            style="font-size:0.5rem;">$89B</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="st-mobile-pair reveal">
+                <div class="st-text-block">
+                    <h2>Build your portfolio</h2>
+                    <p>Your picks aren't just for show. Every stock you swipe right on enters your mock portfolio and
+                        gets
+                        tracked against real market performance. No real money — just conviction.</p>
+                </div>
+                <div class="st-phone-mockup">
+                    <div class="st-notch"></div>
+                    <div class="st-screen">
+                        <div class="st-layer st-layer-2 active" style="z-index:10;">
+                            <div class="port-head">
+                                <h4>Your Portfolio</h4>
+                                <h3>$12,450</h3>
+                                <div class="port-badge">+4.2%</div>
+                            </div>
+                            <div class="port-list">
+                                <div class="port-item g">
+                                    <div class="port-item-l"><strong>ARCANIS</strong><span>ARC</span></div>
+                                    <div class="port-item-r"><strong>+2.4%</strong></div>
+                                </div>
+                                <div class="port-item g">
+                                    <div class="port-item-l"><strong>VELTRIS</strong><span>VLT</span></div>
+                                    <div class="port-item-r"><strong>+1.8%</strong></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="st-mobile-pair reveal">
+                <div class="st-text-block">
+                    <h2>Climb the leaderboard</h2>
+                    <p>Your portfolio is scored against every other player. Watch your rank rise — or fall. The
+                        leaderboard
+                        doesn't care about your thesis, only your results.</p>
+                </div>
+                <div class="st-phone-mockup">
+                    <div class="st-notch"></div>
+                    <div class="st-screen">
+                        <div class="st-layer st-layer-3 active" style="z-index:10;">
+                            <div class="port-head" style="margin-bottom:10px;">
+                                <h4 style="margin:0;">Leaderboard</h4>
+                            </div>
+                            <div class="ld-list">
+                                <div class="ld-row">
+                                    <div class="ld-rank">1</div>
+                                    <div class="ld-user">alpha_trader</div>
+                                    <div class="ld-ret">+12.4%</div>
+                                    <div class="ld-score">2450</div>
+                                </div>
+                                <div class="ld-row you">
+                                    <div class="ld-rank">3</div>
+                                    <div class="ld-user">YOU</div>
+                                    <div class="ld-ret">+8.4%</div>
+                                    <div class="ld-score">2040</div>
+                                </div>
+                                <div class="ld-row">
+                                    <div class="ld-rank">4</div>
+                                    <div class="ld-user">marketking</div>
+                                    <div class="ld-ret">+8.2%</div>
+                                    <div class="ld-score">2010</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="demo">
+            <div class="reveal-stagger">
+                <h2>Think you've got the instinct?</h2>
+                <div class="demo-area" id="demo-area">
+                    <div class="halo-wrap">
+                        <div class="halo green" id="halo-g"></div>
+                        <div class="halo red" id="halo-r"></div>
+                    </div>
+                    <div class="demo-cards" id="demo-cards">
+                        <div class="democard" id="d6">
+                            <div class="card-head">
+                                <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                        <path d="M2 17l10 5 10-5" />
+                                        <path d="M2 12l10 5 10-5" />
+                                    </svg></div>
+                                <div>
+                                    <div class="card-name">CYPHRAL</div>
+                                    <div class="card-tick">(CPH)</div>
+                                </div>
+                                <div class="card-tag">Cybersecurity</div>
+                            </div>
+                            <div class="chart" id="dch6"></div>
+                            <div class="metrics">
+                                <div class="m"><span class="ml">P/E Ratio</span><span class="mv">27.8x</span></div>
+                                <div class="m"><span class="ml">MV/BV</span><span class="mv">9.3x</span></div>
+                                <div class="m"><span class="ml">EBITDA</span><span class="mv">$3.4B</span></div>
+                                <div class="m"><span class="ml">Market cap</span><span class="mv">$98B</span></div>
+                            </div>
+                        </div>
+                        <div class="democard" id="d5">
+                            <div class="card-head">
+                                <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <circle cx="12" cy="12" r="10" />
+                                        <path d="M8 12h8M12 8v8" />
+                                    </svg></div>
+                                <div>
+                                    <div class="card-name">SOLWIND</div>
+                                    <div class="card-tick">(SWD)</div>
+                                </div>
+                                <div class="card-tag">Clean Energy</div>
+                            </div>
+                            <div class="chart" id="dch5"></div>
+                            <div class="metrics">
+                                <div class="m"><span class="ml">P/E Ratio</span><span class="mv">18.6x</span></div>
+                                <div class="m"><span class="ml">MV/BV</span><span class="mv">3.8x</span></div>
+                                <div class="m"><span class="ml">EBITDA</span><span class="mv">$890M</span></div>
+                                <div class="m"><span class="ml">Market cap</span><span class="mv">$28B</span></div>
+                            </div>
+                        </div>
+                        <div class="democard" id="d4">
+                            <div class="card-head">
+                                <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                                    </svg></div>
+                                <div>
+                                    <div class="card-name">QUANTEX</div>
+                                    <div class="card-tick">(QTX)</div>
+                                </div>
+                                <div class="card-tag">AI/ML</div>
+                            </div>
+                            <div class="chart" id="dch4"></div>
+                            <div class="metrics">
+                                <div class="m"><span class="ml">P/E Ratio</span><span class="mv">45.1x</span></div>
+                                <div class="m"><span class="ml">MV/BV</span><span class="mv">14.2x</span></div>
+                                <div class="m"><span class="ml">EBITDA</span><span class="mv">$2.9B</span></div>
+                                <div class="m"><span class="ml">Market cap</span><span class="mv">$156B</span></div>
+                            </div>
+                        </div>
+                        <div class="democard" id="d3">
+                            <div class="card-head">
+                                <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="3" y="3" width="7" height="7" rx="1" />
+                                        <rect x="14" y="3" width="7" height="7" rx="1" />
+                                        <rect x="3" y="14" width="7" height="7" rx="1" />
+                                        <rect x="14" y="14" width="7" height="7" rx="1" />
+                                    </svg></div>
+                                <div>
+                                    <div class="card-name">NEXORA</div>
+                                    <div class="card-tick">(NXR)</div>
+                                </div>
+                                <div class="card-tag">Cloud Infra</div>
+                            </div>
+                            <div class="chart" id="dch3"></div>
+                            <div class="metrics">
+                                <div class="m"><span class="ml">P/E Ratio</span><span class="mv">31.4x</span></div>
+                                <div class="m"><span class="ml">MV/BV</span><span class="mv">8.2x</span></div>
+                                <div class="m"><span class="ml">EBITDA</span><span class="mv">$4.1B</span></div>
+                                <div class="m"><span class="ml">Market cap</span><span class="mv">$89B</span></div>
+                            </div>
+                        </div>
+                        <div class="democard" id="d2">
+                            <div class="card-head">
+                                <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <polygon
+                                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                                    </svg></div>
+                                <div>
+                                    <div class="card-name">VELTRIS</div>
+                                    <div class="card-tick">(VLT)</div>
+                                </div>
+                                <div class="card-tag">FinTech</div>
+                            </div>
+                            <div class="chart" id="dch2"></div>
+                            <div class="metrics">
+                                <div class="m"><span class="ml">P/E Ratio</span><span class="mv">22.7x</span></div>
+                                <div class="m"><span class="ml">MV/BV</span><span class="mv">5.6x</span></div>
+                                <div class="m"><span class="ml">EBITDA</span><span class="mv">$1.8B</span></div>
+                                <div class="m"><span class="ml">Market cap</span><span class="mv">$42B</span></div>
+                            </div>
+                        </div>
+                        <div class="democard" id="d1">
+                            <div class="card-head">
+                                <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                                        <path d="M2 17l10 5 10-5" />
+                                        <path d="M2 12l10 5 10-5" />
+                                    </svg></div>
+                                <div>
+                                    <div class="card-name">ARCANIS</div>
+                                    <div class="card-tick">(ARC)</div>
+                                </div>
+                                <div class="card-tag">Semiconductors</div>
+                            </div>
+                            <div class="chart" id="dch1"></div>
+                            <div class="metrics">
+                                <div class="m"><span class="ml">P/E Ratio</span><span class="mv">28.3x</span></div>
+                                <div class="m"><span class="ml">MV/BV</span><span class="mv">11.4x</span></div>
+                                <div class="m"><span class="ml">EBITDA</span><span class="mv">$7.2B</span></div>
+                                <div class="m"><span class="ml">Market cap</span><span class="mv">$214B</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="demo-res" id="demo-results">
+                        <h3>Want the real thing?</h3>
+                        <div class="demo-res-list port-list" style="width:100%;">
+                            <div class="port-item g">
+                                <div class="port-item-l"><strong>ARCANIS</strong><span>ARC</span></div>
+                                <div class="port-item-r"><strong>+2.4%</strong></div>
+                            </div>
+                            <div class="port-item g">
+                                <div class="port-item-l"><strong>VELTRIS</strong><span>VLT</span></div>
+                                <div class="port-item-r"><strong>+1.8%</strong></div>
+                            </div>
+                            <div class="port-item g">
+                                <div class="port-item-l"><strong>QUANTEX</strong><span>QTX</span></div>
+                                <div class="port-item-r"><strong>+4.5%</strong></div>
+                            </div>
+                        </div>
+                        <a href="#beta" class="hero-btn" style="margin-top: 10px;">Apply for closed beta</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- PAGE: FUTURE -->
+    <div class="page" id="page-future">
+        <section class="vision" id="future" style="padding-top: 8rem;">
+            <div class="reveal-stagger">
+                <h2 class="vision-h">Today it's you vs. the leaderboard.<br>
+                    <span>Tomorrow it's you vs. everyone you know.</span>
+                </h2>
+
+                <div class="v-grid">
+                    <div class="v-card reveal">
+                        <div class="v-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <h3>Follow industry experts.</h3>
+                        <p>See what top-ranked analysts and players are picking.</p>
+                    </div>
+                    <div class="v-card reveal">
+                        <div class="v-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                            </svg>
+                        </div>
+                        <h3>React to moves</h3>
+                        <p>Comment on picks. Call out bad plays. Flex good ones.</p>
+                    </div>
+                    <div class="v-card reveal">
+                        <div class="v-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
+                        <h3>Squad competitions</h3>
+                        <p>Build a team. Compete against rival groups.</p>
+                    </div>
+                    <div class="v-card reveal">
+                        <div class="v-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                            </svg>
+                        </div>
+                        <h3>Live feed</h3>
+                        <p>Watch your friends' portfolio moves in real time.</p>
+                    </div>
+                    <div class="v-card reveal">
+                        <div class="v-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path
+                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                </path>
+                            </svg>
+                        </div>
+                        <h3>Interact with your friends</h3>
+                        <p>Like, react, and engage with the picks and commentary from people in your network.</p>
+                    </div>
+                    <div class="v-card reveal">
+                        <div class="v-ico">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </div>
+                        <h3>Share through direct messages</h3>
+                        <p>Send your best picks, analysis, and market takes directly to any player on the platform.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Finance Feed Section -->
+        <section class="futures-feed">
+            <div class="futures-feed-inner">
+                <div class="futures-feed-header">
+                    <span class="section-label">Market Intelligence</span>
+                    <h2>Read the latest from financial markets</h2>
+                    <p>Curated insights from analysts, fund managers, and informed market participants.</p>
+                </div>
+                <div class="feed-list">
+                    <div class="feed-item">
+                        <div class="feed-author">
+                            <div class="feed-avatar" style="background:#4ecb71;color:#1a1a2e;">JW</div>
+                            <div class="feed-author-info">
+                                <strong>James Wu</strong>
+                                <span>Quantitative Analyst &middot; 2h ago</span>
+                            </div>
+                        </div>
+                        <h3>Rate sensitivity in tech stocks &mdash; what the last 3 cycles tell us</h3>
+                        <p>Duration risk is being systematically mispriced as markets reprice Fed expectations. A
+                            data-driven breakdown of historical analogues and what they imply for Q2 positioning...</p>
+                        <div class="feed-tags">
+                            <span class="feed-tag">Macro</span>
+                            <span class="feed-tag">Tech Equities</span>
+                        </div>
+                    </div>
+                    <div class="feed-item">
+                        <div class="feed-author">
+                            <div class="feed-avatar" style="background:#7dd3fc;color:#1a1a2e;">SR</div>
+                            <div class="feed-author-info">
+                                <strong>Sofia Reyes</strong>
+                                <span>Portfolio Manager &middot; 5h ago</span>
+                            </div>
+                        </div>
+                        <h3>Why the small-cap rotation may have further to run</h3>
+                        <p>After years of large-cap dominance, relative value in the Russell 2000 is becoming harder to
+                            ignore. Margin recovery combined with rate cuts is creating asymmetric upside...</p>
+                        <div class="feed-tags">
+                            <span class="feed-tag">Small Cap</span>
+                            <span class="feed-tag">Value Investing</span>
+                        </div>
+                    </div>
+                    <div class="feed-item">
+                        <div class="feed-author">
+                            <div class="feed-avatar" style="background:#ff6b8a;">MK</div>
+                            <div class="feed-author-info">
+                                <strong>Marcus Kim</strong>
+                                <span>Sector Strategist &middot; Yesterday</span>
+                            </div>
+                        </div>
+                        <h3>Energy transition stocks: separating winners from narrative plays</h3>
+                        <p>Not every clean energy name will survive the next rate cycle. EBITDA coverage, project
+                            pipeline, and regulatory exposure matter more than they have in years...</p>
+                        <div class="feed-tags">
+                            <span class="feed-tag">Clean Energy</span>
+                            <span class="feed-tag">Sector Analysis</span>
+                        </div>
+                    </div>
+                    <div class="feed-item">
+                        <div class="feed-author">
+                            <div class="feed-avatar">AL</div>
+                            <div class="feed-author-info">
+                                <strong>Aria Lin</strong>
+                                <span>Risk Analyst &middot; 2 days ago</span>
+                            </div>
+                        </div>
+                        <h3>Positioning ahead of earnings season: what options flows reveal</h3>
+                        <p>Unusual put/call ratios in semis and cloud names suggest institutional hedging is underway.
+                            Here's how to read the positioning data before it moves the tape...</p>
+                        <div class="feed-tags">
+                            <span class="feed-tag">Options</span>
+                            <span class="feed-tag">Earnings</span>
+                            <span class="feed-tag">Semiconductors</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Direct Messaging Section -->
+        <section class="futures-dm">
+            <div class="dm-inner">
+                <div class="dm-text">
+                    <span class="dm-label">Direct Messaging</span>
+                    <h2>Communicate with informed<br>market participants.</h2>
+                    <p>Message top-ranked analysts, fund managers, and traders directly. Ask about their thesis,
+                        challenge their positions, or share your edge. No noise &mdash; only verified participants with
+                        real conviction behind their picks.</p>
+                </div>
+                <div class="dm-mockup">
+                    <div class="dm-bubble-wrap">
+                        <div class="dm-bubble in">
+                            <strong>James Wu</strong>
+                            What's your thesis on PLTR going into earnings?
+                        </div>
+                        <div class="dm-bubble out">
+                            Strong FCF growth + gov contract expansion. Long through Q1. What's your read on the
+                            multiple?
+                        </div>
+                        <div class="dm-bubble in">
+                            <strong>James Wu</strong>
+                            P/S at 28x is stretched &mdash; but defensible if ARR growth holds above 25%.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- SHARED: Footer -->
+    <footer>
+        <div class="fl">stomatch</div>
+        <p>&copy; 2026 Stomatch. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // ==========================================
+        // PAGE ROUTER
+        // ==========================================
+        var currentPage = 'home';
+        var lbSwapInterval = null;
+
+        function navigateTo(page, skipScroll) {
+            if (page === currentPage && !skipScroll) return;
+
+            // Remove active from all pages
+            var pages = document.querySelectorAll('.page');
+            for (var i = 0; i < pages.length; i++) {
+                pages[i].classList.remove('page-active');
+            }
+
+            // Activate target page
+            var target = document.getElementById('page-' + page);
+            if (target) {
+                target.classList.add('page-active');
+            }
+
+            // Update nav link highlights
+            var navLinks = document.querySelectorAll('.nav-link[data-page]');
+            for (var i = 0; i < navLinks.length; i++) {
+                navLinks[i].classList.remove('nav-link-active');
+                if (navLinks[i].getAttribute('data-page') === page) {
+                    navLinks[i].classList.add('nav-link-active');
+                }
+            }
+
+            currentPage = page;
+
+            if (!skipScroll) {
+                window.scrollTo(0, 0);
+            }
+
+            // Re-trigger reveal animations for the new page
+            setTimeout(function () {
+                window.dispatchEvent(new Event('scroll'));
+            }, 50);
+
+            // Re-init charts if switching to today page
+            if (page === 'today' && !todayChartsInit) {
+                initTodayCharts();
+            }
+        }
+
+        function handleHash() {
+            var hash = location.hash.replace('#', '') || 'home';
+
+            // Handle #beta specially - go to home page and scroll to beta
+            if (hash === 'beta') {
+                navigateTo('home', true);
+                setTimeout(function () {
+                    var betaEl = document.getElementById('beta');
+                    if (betaEl) betaEl.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+                return;
+            }
+
+            // Map hash to page
+            var pageMap = { home: 'home', today: 'today', future: 'future' };
+            var page = pageMap[hash] || 'home';
+            navigateTo(page);
+        }
+
+        window.addEventListener('hashchange', handleHash);
+
+        // ==========================================
+        // CHART BUILDER
+        // ==========================================
+        function mkChart(id, trend, animate, points) {
+            var el = document.getElementById(id); if (!el) return;
+            el.innerHTML = '';
+            var n = points || 20, prices = [], base = trend === 'up' ? 30 : 70;
+            prices[0] = base;
+            for (var i = 1; i < n; i++) {
+                var drift = trend === 'up' ? 2 : -2;
+                var noise = (Math.random() - 0.5) * 28;
+                prices[i] = Math.max(5, Math.min(95, prices[i - 1] + drift + noise));
+            }
+            for (var i = 0; i < n; i++) {
+                var prev = i === 0 ? prices[0] : prices[i - 1];
+                var cur = prices[i];
+                var g = cur >= prev;
+                var diff = Math.abs(cur - prev);
+                var bh = Math.max(diff, 3);
+                var wTop = Math.random() * 10;
+                var wBot = Math.random() * 10;
+                var offset = Math.max(0, Math.min(prev, cur) - wBot);
+                var d = document.createElement('div');
+                d.className = 'c ' + (g ? 'g' : 'r');
+                d.style.opacity = animate ? '0' : '1';
+                if (animate) { d.style.transform = 'translateY(8px)'; d.style.transition = 'opacity .3s ease, transform .3s .3s ease'; d.style.transitionDelay = (i * 60) + 'ms'; }
+                d.innerHTML = '<div class="cw" style="height:' + wTop + 'px"></div><div class="cb" style="height:' + bh + 'px"></div><div class="cw" style="height:' + wBot + 'px"></div><div style="height:' + offset + 'px"></div>';
+                el.appendChild(d);
+            }
+            if (animate) { requestAnimationFrame(function () { requestAnimationFrame(function () { var bars = el.querySelectorAll('.c'); for (var j = 0; j < bars.length; j++) { bars[j].style.opacity = '1'; bars[j].style.transform = 'translateY(0)'; } }); }); }
+        }
+
+        // ==========================================
+        // HOME PAGE: Hero cards
+        // ==========================================
+        mkChart('ch1', 'up', true); mkChart('ch2', 'up', false); mkChart('ch3', 'up', false);
+
+        var stocks = [
+            { n: 'PALANTIR', t: 'PLTR', tg: 'AI/Defense', pe: '168x', pb: '21.3x', eb: '$1.1B', mc: '$120B' },
+            { n: 'VELTRIS', t: 'VLT', tg: 'FinTech', pe: '22.7x', pb: '5.6x', eb: '$1.8B', mc: '$42B' },
+            { n: 'NEXORA', t: 'NXR', tg: 'Cloud Infra', pe: '31.4x', pb: '8.2x', eb: '$4.1B', mc: '$89B' },
+            { n: 'QUANTEX', t: 'QTX', tg: 'AI/ML', pe: '45.1x', pb: '14.2x', eb: '$2.9B', mc: '$156B' },
+            { n: 'SOLWIND', t: 'SWD', tg: 'Clean Energy', pe: '18.6x', pb: '3.8x', eb: '$890M', mc: '$28B' },
+            { n: 'MERIDEX', t: 'MDX', tg: 'Biotech', pe: '34.9x', pb: '7.1x', eb: '$1.2B', mc: '$67B' },
+            { n: 'CYPHRAL', t: 'CPH', tg: 'Cybersecurity', pe: '27.8x', pb: '9.3x', eb: '$3.4B', mc: '$98B' },
+            { n: 'TERANOV', t: 'TRN', tg: 'Space Tech', pe: '52.3x', pb: '16.7x', eb: '$640M', mc: '$45B' }
+        ];
+
+        var si = 3, ids = ['c3', 'c2', 'c1'];
+
+        function setupSwipe(id, arrayTracker, isDemo) {
+            var card = document.getElementById(id); if (!card) return;
+            var sx = 0, cx = 0, drag = false;
+
+            var greenHalo, redHalo;
+            if (isDemo) {
+                greenHalo = document.getElementById('halo-g');
+                redHalo = document.getElementById('halo-r');
+            } else {
+                greenHalo = document.getElementById('hero-halo-g');
+                redHalo = document.getElementById('hero-halo-r');
+            }
+
+            function s(e) {
+                if (arrayTracker[arrayTracker.length - 1] !== id) return;
+                if (e.type === 'touchstart') e.preventDefault();
+                card.classList.remove('teasing'); card.classList.add('dragging');
+                drag = true; sx = e.type === 'mousedown' ? e.clientX : e.touches[0].clientX; cx = 0;
+            }
+            function m(e) {
+                if (!drag) return; e.preventDefault();
+                var x = e.type === 'mousemove' ? e.clientX : e.touches[0].clientX;
+                cx = x - sx; card.style.transform = 'translateX(' + cx + 'px) rotate(' + cx * .08 + 'deg)';
+                if (greenHalo && redHalo) {
+                    var op = Math.min(Math.abs(cx) / 100, 1);
+                    if (cx > 0) { greenHalo.style.opacity = op; redHalo.style.opacity = 0; }
+                    else { redHalo.style.opacity = op; greenHalo.style.opacity = 0; }
+                }
+            }
+            function u() {
+                if (!drag) return; drag = false; card.classList.remove('dragging');
+                if (greenHalo && redHalo) { greenHalo.style.opacity = 0; redHalo.style.opacity = 0; }
+
+                if (Math.abs(cx) > 80) {
+                    card.classList.add(cx > 0 ? 'gone-r' : 'gone-l');
+                    if (isDemo) {
+                        demoSwiped++;
+                        arrayTracker.pop();
+                        if (demoSwiped >= 6) {
+                            setTimeout(function () { document.getElementById('demo-results').classList.add('show'); }, 400);
+                        }
+                    } else {
+                        setTimeout(function () { reset(card, arrayTracker, isDemo); reorder(arrayTracker); }, 400);
+                    }
+                } else {
+                    card.style.transform = '';
+                    if (arrayTracker[arrayTracker.length - 1] === id && !isDemo) setTimeout(function () { card.classList.add('teasing') }, 800);
+                }
+            }
+            card.addEventListener('mousedown', s); document.addEventListener('mousemove', m); document.addEventListener('mouseup', u);
+            card.addEventListener('touchstart', s, { passive: false }); card.addEventListener('touchmove', m, { passive: false }); card.addEventListener('touchend', u);
+        }
+
+        function reset(card, arrayTracker, isDemo) {
+            // Disable transitions to prevent wobble/snap during repositioning
+            card.style.transition = 'none';
+            card.classList.remove('gone-r', 'gone-l', 'dragging', 'teasing');
+            card.style.opacity = '';
+            // Place card silently at back-of-stack position — no visual jump
+            card.style.transform = 'scale(.92) translateY(10px)';
+            var d = stocks[si % stocks.length]; si++;
+            card.querySelector('.card-name').textContent = d.n;
+            card.querySelector('.card-tick').textContent = '(' + d.t + ')';
+            card.querySelector('.card-tag').textContent = d.tg;
+            var mv = card.querySelectorAll('.mv');
+            mv[0].textContent = d.pe; mv[1].textContent = d.pb; mv[2].textContent = d.eb; mv[3].textContent = d.mc;
+            var ch = card.querySelector('.chart'); ch.innerHTML = '';
+            ch.id = 'ch_' + Math.random().toString(36).substr(2, 4);
+            mkChart(ch.id, Math.random() > .3 ? 'up' : 'down', true, isDemo ? 30 : 20);
+            // Re-enable transitions after two frames so no animation fires during placement
+            requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                    card.style.transition = '';
+                });
+            });
+        }
+
+        function reorder(arrayTracker) {
+            var f = arrayTracker.pop(); arrayTracker.unshift(f);
+            arrayTracker.forEach(function (id, i) {
+                var card = document.getElementById(id); card.style.zIndex = i + 1;
+                if (i === arrayTracker.length - 1) { card.style.transform = ''; setTimeout(function () { card.classList.add('teasing') }, 1000); }
+                else { card.classList.remove('teasing'); var sc = .92 + i * .04, ty = (2 - i) * 5; card.style.transform = 'scale(' + sc + ') translateY(' + ty + 'px)'; }
+            });
+        }
+
+        setupSwipe('c1', ids, false); setupSwipe('c2', ids, false); setupSwipe('c3', ids, false);
+
+        // ==========================================
+        // TODAY PAGE: Demo cards
+        // ==========================================
+        var demoIds = ['d6', 'd5', 'd4', 'd3', 'd2', 'd1'];
+        var demoSwiped = 0;
+        demoIds.forEach(function (did) {
+            setupSwipe(did, demoIds, true);
+            var cid = did.replace('d', 'dch');
+            mkChart(cid, Math.random() > 0.5 ? 'up' : 'down', false, 28);
+        });
+
+        // ==========================================
+        // TODAY PAGE: Scroll walkthrough
+        // ==========================================
+        var todayChartsInit = false;
+
+        function initTodayCharts() {
+            mkChart('st-ch-desktop', 'up', true, 16);
+            mkChart('st-ch-mobile', 'up', true, 16);
+            todayChartsInit = true;
+        }
+
+        var stScrollHeight = document.querySelector('.st-scroll-height');
+        var txt1 = document.getElementById('st-txt-1'), txt2 = document.getElementById('st-txt-2'), txt3 = document.getElementById('st-txt-3');
+        var lyr1 = document.getElementById('st-lyr-1'), lyr2 = document.getElementById('st-lyr-2'), lyr3 = document.getElementById('st-lyr-3');
+
+        window.addEventListener('scroll', function () {
+            // Reveal animations for the active page
+            var activePage = document.querySelector('.page-active');
+            if (activePage) {
+                var reveals = activePage.querySelectorAll('.reveal, .reveal-stagger');
+                var wh = window.innerHeight;
+                for (var i = 0; i < reveals.length; i++) {
+                    var top = reveals[i].getBoundingClientRect().top;
+                    if (top < wh - 50) reveals[i].classList.add('visible');
+                }
+            }
+
+            // Also check shared elements (footer, etc.)
+            var sharedReveals = document.querySelectorAll('footer .reveal, footer .reveal-stagger');
+            var wh2 = window.innerHeight;
+            for (var i = 0; i < sharedReveals.length; i++) {
+                var top2 = sharedReveals[i].getBoundingClientRect().top;
+                if (top2 < wh2 - 50) sharedReveals[i].classList.add('visible');
+            }
+
+            // Scroll walkthrough (only when on Today page)
+            if (currentPage === 'today' && stScrollHeight && window.innerWidth >= 768) {
+                var bounds = stScrollHeight.getBoundingClientRect();
+                var y = -bounds.top;
+                var total = bounds.height - window.innerHeight;
+                var prog = 0;
+                if (y > 0 && total > 0) prog = Math.min(1, Math.max(0, y / total));
+
+                if (txt1) txt1.classList.remove('active');
+                if (txt2) txt2.classList.remove('active');
+                if (txt3) txt3.classList.remove('active');
+                if (lyr1) lyr1.classList.remove('active');
+                if (lyr2) lyr2.classList.remove('active');
+                if (lyr3) lyr3.classList.remove('active');
+
+                if (prog < 0.33) { if (txt1) txt1.classList.add('active'); if (lyr1) lyr1.classList.add('active'); }
+                else if (prog < 0.66) { if (txt2) txt2.classList.add('active'); if (lyr2) lyr2.classList.add('active'); }
+                else { if (txt3) txt3.classList.add('active'); if (lyr3) lyr3.classList.add('active'); }
+            }
+        });
+
+        // ==========================================
+        // HOME PAGE: Leaderboard
+        // ==========================================
+        var lbData = [
+            { r: 1, a: 'A', u: 'alpha_trader', p: '2450', ret: '+12.4%', cls: 'c1' },
+            { r: 2, a: 'B', u: 'bullrun_99', p: '2310', ret: '+11.1%', cls: 'c2' },
+            { r: 3, a: 'M', u: 'marketking', p: '2010', ret: '+8.2%', cls: 'c3' },
+            { r: 4, a: 'S', u: 'stockwhisp', p: '1980', ret: '+8.1%', cls: 'c4' },
+            { r: 5, a: 'Y', u: 'yoloquant', p: '1890', ret: '+7.5%', cls: 'c5' },
+            { r: 6, a: 'D', u: 'defi_dan', p: '1750', ret: '+6.8%', cls: 'c1' },
+            { r: 7, a: 'O', u: 'the_oracle', p: '1640', ret: '+5.5%', cls: 'c2' },
+            { r: 8, a: 'N', u: 'nifty_fifty', p: '1420', ret: '+4.1%', cls: 'c3' },
+            { r: 9, a: 'C', u: 'contrarian_', p: '1310', ret: '+3.2%', cls: 'c4' },
+            { r: 10, a: 'W', u: 'wallst_kid', p: '1180', ret: '+1.8%', cls: 'c5' }
+        ];
+
+        var lbWrap = document.getElementById('lb-wrap');
+        var lbRows = [];
+
+        if (lbWrap) {
+            lbWrap.innerHTML = '';
+            for (var i = 0; i < lbData.length; i++) {
+                var d = lbData[i];
+                var topCls = i === 0 ? ' lb-tr-top1' : (i === 1 ? ' lb-tr-top2' : (i === 2 ? ' lb-tr-top3' : ''));
+                var rankIco = (i < 3) ? '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg>' : (i + 1);
+
+                var el = document.createElement('div');
+                el.className = 'lb-tr' + topCls;
+                el.style.transform = 'translateY(' + (i * 64) + 'px)';
+                el.innerHTML = '<div class="lbr-num">' + rankIco + '</div><div class="lbr-ava ' + d.cls + '">' + d.a + '</div><div class="lbr-usr">' + d.u + '</div><div class="lbr-ret">' + d.ret + '</div><div class="lbr-pts">' + d.p + ' pts</div>';
+                lbWrap.appendChild(el);
+                lbRows.push({ el: el, data: d, currentPos: i });
+            }
+
+            lbSwapInterval = setInterval(function () {
+                if (currentPage !== 'home') return;
+                var idx = 3 + Math.floor(Math.random() * 5);
+                var rowA = lbRows.find(function (r) { return r.currentPos === idx; });
+                var rowB = lbRows.find(function (r) { return r.currentPos === idx + 1; });
+
+                if (rowA && rowB) {
+                    rowA.currentPos = idx + 1;
+                    rowB.currentPos = idx;
+                    rowA.el.style.transform = 'translateY(' + (rowA.currentPos * 64) + 'px)';
+                    rowB.el.style.transform = 'translateY(' + (rowB.currentPos * 64) + 'px)';
+
+                    var tempRank = rowA.el.querySelector('.lbr-num').innerHTML;
+                    rowA.el.querySelector('.lbr-num').innerHTML = rowB.el.querySelector('.lbr-num').innerHTML;
+                    rowB.el.querySelector('.lbr-num').innerHTML = tempRank;
+
+                    var tempCls = rowA.el.className;
+                    rowA.el.className = rowB.el.className;
+                    rowB.el.className = tempCls;
+
+                    var tempPts = rowA.el.querySelector('.lbr-pts').innerHTML;
+                    rowA.el.querySelector('.lbr-pts').innerHTML = rowB.el.querySelector('.lbr-pts').innerHTML;
+                    rowB.el.querySelector('.lbr-pts').innerHTML = tempPts;
+
+                    var tempRet = rowA.el.querySelector('.lbr-ret').innerHTML;
+                    rowA.el.querySelector('.lbr-ret').innerHTML = rowB.el.querySelector('.lbr-ret').innerHTML;
+                    rowB.el.querySelector('.lbr-ret').innerHTML = tempRet;
+                }
+            }, 4500);
+        }
+
+        // ==========================================
+        // BETA FORM (EmailJS)
+        // ==========================================
+        var EMAILJS_PUBLIC_KEY = '_aUICjxoV3s3OM1Qf';
+        var EMAILJS_SERVICE_ID = 'service_a1hhol6';
+        var EMAILJS_TEMPLATE_ID = 'template_b9jh0h6';
+
+        (function () { emailjs.init(EMAILJS_PUBLIC_KEY); })();
+
+        var bf = document.getElementById('bf');
+        if (bf) {
+            bf.addEventListener('submit', function (e) {
+                e.preventDefault();
+                var form = this;
+                var btn = document.getElementById('submitBtn');
+                btn.disabled = true;
+                btn.textContent = 'Sending...';
+
+                emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, form)
+                    .then(function () {
+                        form.style.display = 'none';
+                        document.getElementById('suc').classList.add('show');
+
+                        // Increment the waitlist counter
+                        fetch('counter.php?action=increment', { method: 'POST' })
+                            .then(function () { fetchWaitlistCount(); })
+                            .catch(function (e) { console.error('Failed to increment counter', e); });
+
+                    }, function (error) {
+                        console.error('EmailJS error:', error);
+                        btn.disabled = false;
+                        btn.textContent = 'Submit Application';
+                        alert('Something went wrong. Please try again.');
+                    });
+            });
+        }
+
+        // ==========================================
+        // WAITLIST COUNTER (PHP Text File)
+        // ==========================================
+        var waitlistCountEl = document.getElementById('waitlist-count');
+
+        function fetchWaitlistCount() {
+            if (!waitlistCountEl) return;
+
+            fetch('counter.php')
+                .then(function (response) {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.json();
+                })
+                .then(function (data) {
+                    var displayCount = parseInt(data.count) || 0;
+                    waitlistCountEl.innerText = displayCount + " people on the waitlist";
+                })
+                .catch(function (error) {
+                    console.error('Error fetching waitlist count:', error);
+                    // Fallback to exactly what you had before if PHP isn't running
+                    var currentHour = new Date().getHours();
+                    var fallbackCount = Math.floor(142 + (currentHour * 3.7) + (new Date().getMinutes() / 5));
+                    waitlistCountEl.innerText = fallbackCount + " people on the waitlist";
+                });
+        }
+
+        // Fetch the count when the page loads
+        fetchWaitlistCount();
+
+        // ==========================================
+        // "Apply for Beta" button handler
+        // ==========================================
+        document.getElementById('nav-beta-btn').addEventListener('click', function (e) {
+            e.preventDefault();
+            location.hash = 'beta';
+        });
+
+        // Handle beta links inside demo results too
+        document.querySelectorAll('a[href="#beta"]').forEach(function (link) {
+            if (link.id === 'nav-beta-btn') return;
+            link.addEventListener('click', function (e) {
+                e.preventDefault();
+                location.hash = 'beta';
+            });
+        });
+
+        // ==========================================
+        // INIT: Load correct page from hash
+        // ==========================================
+        handleHash();
+        window.dispatchEvent(new Event('scroll'));
+        setTimeout(function () { window.dispatchEvent(new Event('scroll')); }, 100);
+
+        // Init today charts if starting on today page
+        if (currentPage === 'today') {
+            initTodayCharts();
+        }
+    </script>
+
+</body>
+
+</html>
